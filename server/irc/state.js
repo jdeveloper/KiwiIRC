@@ -33,7 +33,7 @@ util.inherits(State, events.EventEmitter);
 
 module.exports = State;
 
-State.prototype.connect = function (hostname, port, ssl, nick, user, pass, callback) {
+State.prototype.connect = function (hostname, port, ssl, nick, user, ident, pass, callback) {
     var that = this;
     var con, con_num;
 
@@ -53,6 +53,7 @@ State.prototype.connect = function (hostname, port, ssl, nick, user, pass, callb
         ssl,
         nick,
         user,
+        ident,
         pass,
         this);
     

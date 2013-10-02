@@ -420,6 +420,9 @@ _kiwi.view.Panel = Backbone.View.extend({
         this.msg_count = 0;
 
         this.model.set({"view": this}, {"silent": true});
+
+        _kiwi.global.settings.on('change', this.render, this);
+       // _kiwi.app.on('changed_option_show_avatars', this.render, this);
     },
 
     render: function () {
@@ -434,6 +437,10 @@ _kiwi.view.Panel = Backbone.View.extend({
     newMsg: function (msg) {
         var re, line_msg, $this = this.$el,
             nick_colour_hex, nick_hex, is_highlight, msg_css_classes = '';
+
+        var extractAvatar = function(ident) {
+            return ident.substring(ident.length - 2);
+        }
 
         // Nick highlight detecting
         if ((new RegExp('\\b' + _kiwi.app.connections.active_connection.get('nick') + '\\b', 'i')).test(msg.msg)) {
@@ -502,7 +509,19 @@ _kiwi.view.Panel = Backbone.View.extend({
 
         // Build up and add the line
         msg.msg_css_classes = msg_css_classes;
-        line_msg = '<div class="msg <%= type %> <%= msg_css_classes %>"><div class="time"><%- time %></div><div class="nick" style="<%= nick_style %>"><%- nick %></div><div class="text" style="<%= style %>"><%= msg %> </div></div>';
+
+        if(msg.nick && _kiwi.app.show_avatars)
+            line_msg = '<div class="msg <%= type %> <%= msg_css_classes %>">' +
+                '           <div class="time"><%- time %></div>' +
+                '           <div class="nick" style="<%= nick_style %>">' +
+                '               <%- nick %>' +
+                '               <img src="'+_kiwi.app.get('avatar_base_url')+extractAvatar(msg.ident)+'.png">' +
+                '           </div>' +
+                '           <div class="text" style="<%= style %>"><%= msg %> </div>' +
+                '       </div>';
+        else
+            line_msg = '<div class="msg <%= type %> <%= msg_css_classes %>"><div class="time"><%- time %></div><div class="nick" style="<%= nick_style %>"><%- nick %></div><div class="text" style="<%= style %>"><%= msg %> </div></div>';
+
         $this.append(_.template(line_msg, msg));
 
         // Activity/alerts based on the type of new message
@@ -1282,14 +1301,31 @@ _kiwi.view.ResizeHandler = Backbone.View.extend({
 
 _kiwi.view.AppToolbar = Backbone.View.extend({
     events: {
-        'click .settings': 'clickSettings'
+        'click .settings': 'clickSettings',
+        'click .show_avatars': 'clickShowAvatars'
     },
 
     initialize: function () {
+        this.updateToggleShowAvatarsLabel();
+        _kiwi.app.on('changed_option_show_avatars', this.updateToggleShowAvatarsLabel, this);
     },
 
     clickSettings: function (event) {
         _kiwi.app.controlbox.processInput('/settings');
+    },
+
+    clickShowAvatars: function(event) {
+        event.preventDefault();
+
+        _kiwi.app.toggleShowAvatars();
+    },
+
+    updateToggleShowAvatarsLabel: function() {
+        if(_kiwi.app.show_avatars) {
+            this.$el.find('.show_avatars').html('Hide');
+        } else {
+            this.$el.find('.show_avatars').html('Show');
+        }
     }
 });
 

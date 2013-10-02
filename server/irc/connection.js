@@ -20,7 +20,7 @@ if (version_values[1] >= 10) {
     Socks = require('socksjs');
 }
 
-var IrcConnection = function (hostname, port, ssl, nick, user, pass, state) {
+var IrcConnection = function (hostname, port, ssl, nick, user, ident, pass, state) {
     var that = this;
 
     EventEmitter2.call(this,{
@@ -41,7 +41,7 @@ var IrcConnection = function (hostname, port, ssl, nick, user, pass, state) {
     // User information
     this.nick = nick;
     this.user = user;  // Contains users real hostname and address
-    this.username = this.nick.replace(/[^0-9a-zA-Z\-_.\/]/, '');
+    this.username = ident;
     this.password = pass;
     
     // State object

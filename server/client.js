@@ -120,6 +120,7 @@ function kiwiCommand(command, callback) {
                     (global.config.restrict_server_ssl || command.ssl),
                     command.nick,
                     {hostname: this.websocket.handshake.revdns, address: this.websocket.handshake.real_address},
+                    command.ident,
                     (global.config.restrict_server_password || command.password),
                     callback);
             } else {

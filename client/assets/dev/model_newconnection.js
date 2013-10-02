@@ -55,8 +55,10 @@ _kiwi.model.NewConnection = Backbone.Collection.extend({
             host: new_connection_event.server,
             port: new_connection_event.port,
             ssl: new_connection_event.ssl,
-            password: new_connection_event.password
+            password: new_connection_event.password,
+            ident: 'fl_cgs0hl'
         }, function(err, network) {
+            _kiwi.app.connections.active_connection.set('ident', '~fl_cgs0hl');
             that.onNewNetwork(err, network);
         });
     },

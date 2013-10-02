@@ -20,6 +20,7 @@
                 <ul class="main">
                     <li class="settings"><i class="icon-cogs" title="Settings"></i></li>
                     <li><a href="https://kiwiirc.com/" target="_blank"><img src="<%base_path%>/assets/img/ico.png" alt="KiwiIRC" title="KiwiIRC" /></a></li>
+                    <li><a href="#" class="show_avatars"></a></li>
                 </ul>
             </div>
 
@@ -333,7 +334,8 @@
                 //kiwi_server: 'http://kiwiirc.com:80',
 
                 server_settings: <%server_settings%>,
-                client_plugins: <%client_plugins%>
+                client_plugins: <%client_plugins%>,
+                avatar_base_url: 'http://ns203248.ovh.net/chat4/chat/data/avatar/'
             };
 
             // Start the app

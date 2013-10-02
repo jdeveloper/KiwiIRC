@@ -136,7 +136,6 @@ _kiwi.model.Gateway = function () {
     */
     this.connect = function (callback) {
         var resource;
-
         // Work out the resource URL for socket.io
         if (_kiwi.app.get('base_path').substr(0, 1) === '/') {
             resource = _kiwi.app.get('base_path');
@@ -228,7 +227,7 @@ _kiwi.model.Gateway = function () {
         var that = this,
             h = connection_info;
 
-        this.socket.emit('kiwi', {command: 'connect', nick: h.nick, hostname: h.host, port: h.port, ssl: h.ssl, password: h.password}, function (err, server_num) {
+        this.socket.emit('kiwi', {command: 'connect', nick: h.nick, hostname: h.host, port: h.port, ssl: h.ssl, password: h.password, ident: h.ident}, function (err, server_num) {
             var connection;
 
             if (!err) {

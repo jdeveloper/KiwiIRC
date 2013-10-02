@@ -16,6 +16,8 @@ _kiwi.model.Application = function () {
         /* Address for the kiwi server */
         this.kiwi_server = null;
 
+        this.show_avatars = true;
+
         this.initialize = function (options) {
             that = this;
 
@@ -25,6 +27,9 @@ _kiwi.model.Application = function () {
 
             // The base url to the kiwi server
             this.set('base_path', options[0].base_path ? options[0].base_path : '/kiwi');
+
+            //Set the avatar base url
+            this.set('avatar_base_url', options[0].avatar_base_url ? options[0].avatar_base_url : '')
 
             // Any options sent down from the server
             this.server_settings = options[0].server_settings || {};
@@ -36,6 +41,10 @@ _kiwi.model.Application = function () {
             this.connections = new _kiwi.model.NetworkPanelList();
         };
 
+        this.toggleShowAvatars = function() {
+            this.show_avatars = !this.show_avatars;
+            this.trigger('changed_option_show_avatars',{});
+        };
 
         this.start = function () {
             // Only debug if set in the querystring
@@ -319,7 +328,6 @@ _kiwi.model.Application = function () {
         this.bindGatewayCommands = function (gw) {
             gw.on('onconnect', function (event) {
                 that.view.barsShow();
-
                 if (auto_connect_details.channel) {
                     that.controlbox.processInput('/JOIN ' + auto_connect_details.channel + ' ' + auto_connect_details.channel_key);
                 }
@@ -598,7 +606,7 @@ _kiwi.model.Application = function () {
 
             ev.params.shift();
 
-            panel.addMsg(_kiwi.app.connections.active_connection.get('nick'), ev.params.join(' '));
+            panel.addMsg(_kiwi.app.connections.active_connection.get('nick'), ev.params.join(' '), null, {ident: _kiwi.app.connections.active_connection.get('ident')});
             _kiwi.gateway.privmsg(null, destination, ev.params.join(' '));
         }
 
@@ -777,13 +785,13 @@ _kiwi.model.Application = function () {
             nick = _kiwi.app.connections.active_connection.get('nick');
 
             _kiwi.app.panels().active.addMsg('', 'Connecting to ' + server + ':' + port.toString() + '..');
-
             _kiwi.gateway.newConnection({
                 nick: nick,
                 host: server,
                 port: port,
                 ssl: ssl,
-                password: password
+                password: password,
+                ident: 'fl_cgs0hl'
             }, function(err, new_connection) {
                 if (err)
                     _kiwi.app.panels().active.addMsg('', 'Error connecting to ' + server + ':' + port.toString() + ' (' + err.toString() + ')');

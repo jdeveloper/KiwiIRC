@@ -269,6 +269,7 @@
 
     function onMsg(event) {
         var panel,
+            opts = {},
             is_pm = (event.channel == this.get('nick'));
 
         // An ignored user? don't do anything with it
@@ -293,7 +294,12 @@
             }
         }
 
-        panel.addMsg(event.nick, event.msg);
+        if(event.ident)
+            opts.ident = event.ident;
+        else
+            opts.ident = '';
+
+        panel.addMsg(event.nick, event.msg, null, opts);
     }
 
 

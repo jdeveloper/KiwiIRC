@@ -20,13 +20,17 @@ _kiwi.model.Panel = Backbone.Model.extend({
             opts.time = d.getHours().toString().lpad(2, "0") + ":" + d.getMinutes().toString().lpad(2, "0") + ":" + d.getSeconds().toString().lpad(2, "0");
         }
 
+        if (!opts || typeof opts.ident === 'undefined') {
+            opts.ident = '';
+        }
+
         // CSS style defaults to empty string
         if (!opts || typeof opts.style === 'undefined') {
             opts.style = '';
         }
 
         // Run through the plugins
-        message_obj = {"msg": msg, "time": opts.time, "nick": nick, "chan": this.get("name"), "type": type, "style": opts.style};
+        message_obj = {"msg": msg, "time": opts.time, "nick": nick, "chan": this.get("name"), "type": type, "style": opts.style, "ident": opts.ident};
         //tmp = _kiwi.plugs.run('addmsg', message_obj);
         if (!message_obj) {
             return;
