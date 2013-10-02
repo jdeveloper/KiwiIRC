@@ -974,6 +974,8 @@ _kiwi.view.ControlBox = Backbone.View.extend({
         // Hold tab autocomplete data
         this.tabcomplete = {active: false, data: [], prefix: ''};
 
+        this.commandDecorators = [];
+
         // Keep the nick view updated with nick changes
         _kiwi.app.connections.on('change:nick', function(connection) {
             // Only update the nick view if it's the active connection
@@ -1199,17 +1201,29 @@ _kiwi.view.ControlBox = Backbone.View.extend({
             params.unshift(_kiwi.app.panels().active.get('name'));
         }
 
+        var event = {command: command, params: params};
+        this.decorateCommand(event);
+
         // Trigger the command events
-        this.trigger('command', {command: command, params: params});
-        this.trigger('command:' + command, {command: command, params: params});
+        this.trigger('command', event);
+        this.trigger('command:' + command, event);
 
         // If we didn't have any listeners for this event, fire a special case
         // TODO: This feels dirty. Should this really be done..?
         if (!this._events['command:' + command]) {
-            this.trigger('unknown_command', {command: command, params: params});
+            this.trigger('unknown_command', event);
         }
     },
 
+    decorateCommand: function(command) {
+        _.each(this.commandDecorators,function(decorator, i) {
+            decorator(command);
+        });
+    },
+
+    addCommandDecorator: function(decorator) {
+        this.commandDecorators.push(decorator);
+    },
 
     addPluginIcon: function ($icon) {
         var $tool = $('<div class="tool"></div>').append($icon);

@@ -145,6 +145,7 @@ html, body { height:100%; }
 /* Plugin tools */
 #kiwi #controlbox .input_tools { float:right; }
 #kiwi #controlbox .input_tools .tool { margin:0 1em; display:inline; }
+#kiwi #controlbox .input_tools .active { margin:0 1em; display:inline; background-color: #DEDEDE}
 
 
 
