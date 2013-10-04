@@ -364,6 +364,18 @@ _kiwi.model.Gateway = function () {
         this.sendData(connection_id, data, callback);
     };
 
+    this.away = function (connection_id, nick, trailing, callback) {
+        var data = {
+            method: 'away',
+            args: {
+                nick: nick,
+                trailing: trailing
+            }
+        };
+
+        this.sendData(connection_id, data, callback);
+    }
+
     /**
     *   Sends a NOTICE message
     *   @param  {String}    target      The target of the message (e.g. a channel or nick)

@@ -1,0 +1,85 @@
+<style>
+    #state_plugin li {
+        list-style: none;
+    }
+
+    #state_plugin li.active {
+        background-color: #3F9532;
+    }
+
+    #state_plugin ul {
+        position: absolute;
+        background-color: #FFFFFF;
+    }
+</style>
+
+<div id="state_plugin" class="tool">
+    <img src="../kiwi/assets/img/emoticons/msn_clock.png"> <span>Estado...</span>
+    <ul>
+        <li data-state="Disponible">Disponible</li>
+        <li data-state="Ausente">Ausente</li>
+        <li data-state="No disponible">No disponible</li>
+        <li data-state="No privados">No privados</li>
+        <li data-state=""><input type="text" /></li>
+        <li><button id="btn_estado">Cambiar</button></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    
+    (function () {
+        var network = kiwi.components.Network();
+        var control = kiwi.components.ControlInput();
+
+        var $icon = $('#state_plugin');
+        var $states= $icon.find('ul');
+        var $customState = $states.find('input');
+        var state = null;
+
+        var setStatesPosition = function() {
+            $states.css('top', (-($icon.position().top + $icon.height() + $states.height()))+'px');
+            $states.css('left', ($icon.position().left - 40)+'px');
+        };
+
+        $input = $("#kiwi #controlbox textarea");
+
+        $states.hide();
+
+        $icon.click(function(e) {
+            $customState.val('');
+            state = '';
+            $states.show();
+        });
+
+        $(document).click(function(e) {
+            if(e.target != $icon.find('img:first')[0]) {
+                $states.hide();
+            }
+        });
+
+        $states.find('li').click(function(e){
+            e.stopPropagation();
+
+            $this = $(this);
+            
+            state = $this.data('state');
+            $this.parent().find('li').removeClass('active');
+            $this.addClass('active');
+        });
+
+        $('#btn_estado').click(function() {
+            control.run('/away '+state);
+            $(this).parent().parent().hide();
+        });
+
+        $customState.change(function(){
+            state = $customState.val();
+            $customState.parent().data('state', state);
+        });
+
+        control.addPluginIcon($icon);
+        setStatesPosition();
+
+        $icon.OnPositionChange(setStatesPosition);
+    })();
+</script>

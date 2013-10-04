@@ -439,6 +439,8 @@ _kiwi.model.Application = function () {
 
             controlbox.on('command:server', serverCommand);
 
+            controlbox.on('command:away', awayCommand);
+
 
             controlbox.on('command:css', function (ev) {
                 var queryString = '?reload=' + new Date().getTime();
@@ -613,6 +615,12 @@ _kiwi.model.Application = function () {
 
             panel.addMsg(_kiwi.app.connections.active_connection.get('nick'), ev.params.join(' '), null, {ident: _kiwi.app.connections.active_connection.get('ident')});
             _kiwi.gateway.privmsg(null, destination, ev.params.join(' '));
+        }
+
+        function awayCommand (ev) {
+            var nick = _kiwi.app.connections.active_connection.get('nick');
+            var trailing = ev.params.join(' ');
+            _kiwi.gateway.away(null, nick, trailing);
         }
 
         function actionCommand (ev) {
