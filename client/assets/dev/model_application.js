@@ -18,6 +18,8 @@ _kiwi.model.Application = function () {
 
         this.show_avatars = true;
 
+        this.message_formaters = [];
+
         this.initialize = function (options) {
             that = this;
 
@@ -66,6 +68,9 @@ _kiwi.model.Application = function () {
             this.showIntialConenctionDialog();
         };
 
+        this.addMessageFormater = function(formater) {
+            this.message_formaters.push(formater);
+        };
 
         this.detectKiwiServer = function () {
             // If running from file, default to localhost:7777 by default

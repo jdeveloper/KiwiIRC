@@ -484,6 +484,9 @@ _kiwi.view.Panel = Backbone.View.extend({
         // Convert IRC formatting into HTML formatting
         msg.msg = formatIRCMsg(msg.msg);
 
+        _.each(_kiwi.app.message_formaters, function(formater) {
+            msg.msg = formater(msg.msg);
+        });
 
         // Add some colours to the nick (Method based on IRSSIs nickcolor.pl)
         nick_colour_hex = (function (nick) {

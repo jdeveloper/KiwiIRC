@@ -1,0 +1,90 @@
+<style>
+    #emoticos li {
+        list-style: none;
+        float: left;
+        width: 20px;
+    }
+
+    #emoticos ul {
+        width: 80px;
+        position: absolute;
+    }
+</style>
+
+<div id="emoticos" class="tool">
+    <img src="../kiwi/assets/img/emoticons/msn_star.png">
+    <ul>
+        <li data-code=":)"><img src="../kiwi/assets/img/emoticons/msn_smiley.png"></li>
+        <li data-code="*"><img src="../kiwi/assets/img/emoticons/msn_star.png"></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    (function () {
+
+
+        var network = kiwi.components.Network();
+        var control = kiwi.components.ControlInput();
+        var selected_color = null;
+
+        var $icon = $('#emoticos');
+        var $emoticons = $icon.find('ul');
+
+        var setEmoticonsPosition = function() {
+            $emoticons.css('top', (-($icon.position().top + $icon.height() + 25))+'px');
+            $emoticons.css('left', ($icon.position().left)+'px');
+        };
+
+        $input = $("#kiwi #controlbox textarea");
+
+        var setCursorAtEnd = function(el) {
+            var v = $(el).val();
+            $(el).focus().val("").val(v);
+        }
+
+        var emoticonize = function(text) {
+            function escapeRegExp(str) {
+                return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            }
+
+            var formated_text  = text;
+
+            $emoticons.find('li').each(function(){
+                $this = $(this);
+
+                var replace = escapeRegExp($this.data('code'));
+                formated_text = formated_text.replace(new RegExp(replace, 'g'), $this.html());
+            });
+
+            return formated_text;
+        }
+
+        //we need to hide the color box every time we click outside of the color list
+        $(document).click(function(e) {
+            if(e.target != $icon.find('img:first')[0]) {
+                $emoticons.hide();
+            }
+        });
+
+        $icon.click(function(e){
+            $emoticons.show();
+        });
+
+        $emoticons.find('li').click(function(e){
+            e.stopPropagation();
+
+            $this = $(this);
+            $input.val($input.val() + $this.data('code'));
+            setCursorAtEnd($input);
+
+            $this.parent().hide();
+        });
+
+        $emoticons.hide();
+        control.addPluginIcon($icon);
+        setEmoticonsPosition();
+        kiwi.components.MessageFormater().addMessageFormater(emoticonize);
+
+        $icon.OnPositionChange(setEmoticonsPosition);
+    })();
+</script>

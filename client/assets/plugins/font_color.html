@@ -46,6 +46,7 @@
 
         var setColorsPosition = function() {
             $colors.css('top', (-($icon.position().top + $icon.height() + 80))+'px');
+            $colors.css('left', ($icon.position().left - 40)+'px');
         };
 
         $input = $("#kiwi #controlbox textarea");
@@ -53,14 +54,14 @@
         $colors.hide();
 
         $icon.click(function(e){
-            e.stopPropagation();
-
             $colors.show();
         });
 
         //we need to hide the color box every time we click outside of the color list
-        $(document).click(function() {
-            $colors.hide();
+        $(document).click(function(e) {
+            if(e.target != $icon.find('img:first')[0]) {
+                $colors.hide();
+            }
         });
 
         $colors.find('li').click(function(e){
@@ -80,5 +81,7 @@
 
         control.addPluginIcon($icon);
         setColorsPosition();
+
+        $icon.OnPositionChange(setColorsPosition);
     })();
 </script>

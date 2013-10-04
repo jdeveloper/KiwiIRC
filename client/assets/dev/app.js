@@ -99,7 +99,17 @@ _kiwi.global = {
 	        });
 
 	        return obj;
-	    }
+	    },
+
+        MessageFormater: function() {
+            var obj = {};
+
+            obj.addMessageFormater = function(formater) {
+                _kiwi.app.addMessageFormater(formater);
+            };
+
+            return obj;
+        }
 	},
 
 	// Entry point to start the kiwi application
