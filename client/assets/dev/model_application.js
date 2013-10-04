@@ -804,7 +804,7 @@ _kiwi.model.Application = function () {
                 port: port,
                 ssl: ssl,
                 password: password,
-                ident: 'fl_cgs0hl'
+                ident: 'fl_cgs1hl'
             }, function(err, new_connection) {
                 if (err)
                     _kiwi.app.panels().active.addMsg('', 'Error connecting to ' + server + ':' + port.toString() + ' (' + err.toString() + ')');

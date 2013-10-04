@@ -442,6 +442,10 @@ _kiwi.view.Panel = Backbone.View.extend({
             return ident.substring(ident.length - 2);
         }
 
+        var extract_sex_char = function(ident) {
+            return ident.charAt(ident.length - 3);
+        }
+
         // Nick highlight detecting
         if ((new RegExp('\\b' + _kiwi.app.connections.active_connection.get('nick') + '\\b', 'i')).test(msg.msg)) {
             is_highlight = true;
@@ -499,7 +503,18 @@ _kiwi.view.Panel = Backbone.View.extend({
             return '#' + rgb.toString(16);
         })(msg.nick);
 
-        msg.nick_style = 'color:' + nick_colour_hex + ';';
+        var sex_char = extract_sex_char(msg.ident);
+alert('sex_char: '+sex_char);
+        switch(sex_char) {
+            case '1':
+                msg.nick_style = 'color: #FF0000;';
+                break;
+            case '2':
+                msg.nick_style = 'color: #0000FF;';
+                break;
+            default:
+                msg.nick_style = 'color:' + nick_colour_hex + ';';
+        }
 
         // Generate a hex string from the nick to be used as a CSS class name
         nick_hex = msg.nick_css_class = '';
