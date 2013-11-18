@@ -140,7 +140,15 @@ _kiwi.global = {
 	},
 
 	//function to connect to the server
-    connect: function(options){
+    connect: function(options, private){
+    	if(typeof(private) !== "undefined"){
+    		_kiwi.gateway.bind('onconnect', function(){
+    			var panel = new _kiwi.model.Query({name: private});
+		        _kiwi.app.connections.active_connection.panels.add(panel);
+		        panel.view.show();
+    		});
+        }    	
+
         _kiwi.app.connection_dialog.view.trigger('server_connect', options);
     }
 };

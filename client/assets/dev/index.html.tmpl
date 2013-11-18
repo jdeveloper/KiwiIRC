@@ -349,16 +349,20 @@
                 });
             }
 
-            channel = getQueryVariable('channel');
+            var channel = getQueryVariable('channel');
+            var private = getQueryVariable('private');
+            var defaultConectionData = <%server_settings%>;
+            var connectionData = defaultConectionData.client;
+            connectionData.channel_key = '';
 
             if(typeof(channel) !== "undefined"){
-                var defaultConectionData = <%server_settings%>;
-                var connectionData = defaultConectionData.client;
                 connectionData.channel = '#'+channel;
-                connectionData.channel_key = '';
                 
                 kiwi.hideServerConnectDialog();
                 kiwi.connect(connectionData);
+            }else if(typeof(private) !== "undefined"){
+                kiwi.hideServerConnectDialog();
+                kiwi.connect(connectionData, private);
             }
         }
 
