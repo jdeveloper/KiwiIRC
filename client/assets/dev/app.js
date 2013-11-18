@@ -133,7 +133,16 @@ _kiwi.global = {
 		_kiwi.app.start();
 
 		return true;
-	}
+	},
+
+	hideServerConnectDialog: function(){
+		_kiwi.app.connection_dialog.view.$el.hide();
+	},
+
+	//function to connect to the server
+    connect: function(options){
+        _kiwi.app.connection_dialog.view.trigger('server_connect', options);
+    }
 };
 
 

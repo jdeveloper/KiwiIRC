@@ -31,7 +31,7 @@ _kiwi.model.Application = function () {
             this.set('base_path', options[0].base_path ? options[0].base_path : '/kiwi');
 
             //Set the avatar base url
-            this.set('avatar_base_url', options[0].avatar_base_url ? options[0].avatar_base_url : '')
+            this.set('avatar_base_url', options[0].avatar_base_url ? options[0].avatar_base_url : '');
 
             // Any options sent down from the server
             this.server_settings = options[0].server_settings || {};
@@ -84,7 +84,9 @@ _kiwi.model.Application = function () {
 
 
         this.showIntialConenctionDialog = function() {
-            var connection_dialog = new _kiwi.model.NewConnection();
+            this.connection_dialog = new _kiwi.model.NewConnection();
+            var connection_dialog = this.connection_dialog;
+            
             this.populateDefaultServerSettings(connection_dialog);
 
             connection_dialog.view.$el.addClass('initial');

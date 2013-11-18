@@ -504,7 +504,7 @@ _kiwi.view.Panel = Backbone.View.extend({
         })(msg.nick);
 
         var sex_char = extract_sex_char(msg.ident);
-alert('sex_char: '+sex_char);
+
         switch(sex_char) {
             case '1':
                 msg.nick_style = 'color: #FF0000;';

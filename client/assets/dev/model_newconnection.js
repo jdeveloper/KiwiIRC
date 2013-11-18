@@ -14,7 +14,6 @@ _kiwi.model.NewConnection = Backbone.Collection.extend({
 
         this.view.networkConnecting();
 
-        
         // If we don't have socket.io loaded, load it before opening a new connection
         if (!window.io) {
             // Path to get the socket.io transport code

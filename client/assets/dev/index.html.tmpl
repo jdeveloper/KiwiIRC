@@ -348,6 +348,18 @@
                     kiwi.plugins.load(plugin_url);
                 });
             }
+
+            channel = getQueryVariable('channel');
+
+            if(typeof(channel) !== "undefined"){
+                var defaultConectionData = <%server_settings%>;
+                var connectionData = defaultConectionData.client;
+                connectionData.channel = '#'+channel;
+                connectionData.channel_key = '';
+                
+                kiwi.hideServerConnectDialog();
+                kiwi.connect(connectionData);
+            }
         }
 
 
